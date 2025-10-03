@@ -1,0 +1,289 @@
+package github:server@0.1.0;
+
+// Core types for request/response
+interface types {
+    // Common types
+    type error-code = string;
+    
+    record error-response {
+        code: error-code,
+        message: string,
+    }
+    
+    variant tool-result {
+        success(string),
+        error(error-response),
+    }
+    
+    // Pagination
+    record pagination {
+        page: u32,
+        per-page: u32,
+    }
+    
+    // Tool call request structure
+    record tool-request {
+        name: string,
+        params: string, // JSON-serialized parameters
+    }
+    
+    // Resource request structure  
+    record resource-request {
+        uri: string,
+    }
+    
+    // Prompt request structure
+    record prompt-request {
+        name: string,
+        params: string, // JSON-serialized parameters
+    }
+}
+
+// Repository operations
+interface repositories {
+    use types.{tool-result, tool-request};
+    
+    // Search for repositories
+    search-repositories: func(request: tool-request) -> tool-result;
+    
+    // Get file contents
+    get-file-contents: func(request: tool-request) -> tool-result;
+    
+    // Create or update files
+    create-or-update-file: func(request: tool-request) -> tool-result;
+    
+    // Delete files
+    delete-file: func(request: tool-request) -> tool-result;
+    
+    // List commits
+    list-commits: func(request: tool-request) -> tool-result;
+    
+    // Get specific commit
+    get-commit: func(request: tool-request) -> tool-result;
+    
+    // Search code
+    search-code: func(request: tool-request) -> tool-result;
+    
+    // List branches
+    list-branches: func(request: tool-request) -> tool-result;
+    
+    // Create branch
+    create-branch: func(request: tool-request) -> tool-result;
+    
+    // List tags
+    list-tags: func(request: tool-request) -> tool-result;
+    
+    // Get tag
+    get-tag: func(request: tool-request) -> tool-result;
+    
+    // List releases
+    list-releases: func(request: tool-request) -> tool-result;
+    
+    // Get latest release
+    get-latest-release: func(request: tool-request) -> tool-result;
+    
+    // Get release by tag
+    get-release-by-tag: func(request: tool-request) -> tool-result;
+    
+    // Push files
+    push-files: func(request: tool-request) -> tool-result;
+    
+    // Create repository
+    create-repository: func(request: tool-request) -> tool-result;
+    
+    // Fork repository
+    fork-repository: func(request: tool-request) -> tool-result;
+    
+    // Star/unstar repository
+    star-repository: func(request: tool-request) -> tool-result;
+    unstar-repository: func(request: tool-request) -> tool-result;
+    
+    // List starred repositories
+    list-starred-repositories: func(request: tool-request) -> tool-result;
+}
+
+// Issues and pull requests
+interface issues {
+    use types.{tool-result, tool-request};
+    
+    // Issues
+    get-issue: func(request: tool-request) -> tool-result;
+    search-issues: func(request: tool-request) -> tool-result;
+    list-issues: func(request: tool-request) -> tool-result;
+    create-issue: func(request: tool-request) -> tool-result;
+    update-issue: func(request: tool-request) -> tool-result;
+    add-issue-comment: func(request: tool-request) -> tool-result;
+    get-issue-comments: func(request: tool-request) -> tool-result;
+    list-issue-types: func(request: tool-request) -> tool-result;
+    list-sub-issues: func(request: tool-request) -> tool-result;
+    add-sub-issue: func(request: tool-request) -> tool-result;
+    remove-sub-issue: func(request: tool-request) -> tool-result;
+    reprioritize-sub-issue: func(request: tool-request) -> tool-result;
+    assign-copilot-to-issue: func(request: tool-request) -> tool-result;
+    
+    // Pull Requests
+    get-pull-request: func(request: tool-request) -> tool-result;
+    list-pull-requests: func(request: tool-request) -> tool-result;
+    create-pull-request: func(request: tool-request) -> tool-result;
+    update-pull-request: func(request: tool-request) -> tool-result;
+    merge-pull-request: func(request: tool-request) -> tool-result;
+    get-pull-request-files: func(request: tool-request) -> tool-result;
+    search-pull-requests: func(request: tool-request) -> tool-result;
+    get-pull-request-status: func(request: tool-request) -> tool-result;
+    get-pull-request-reviews: func(request: tool-request) -> tool-result;
+    get-pull-request-review-comments: func(request: tool-request) -> tool-result;
+    get-pull-request-diff: func(request: tool-request) -> tool-result;
+    update-pull-request-branch: func(request: tool-request) -> tool-result;
+    request-copilot-review: func(request: tool-request) -> tool-result;
+    
+    // Reviews
+    create-and-submit-pull-request-review: func(request: tool-request) -> tool-result;
+    create-pending-pull-request-review: func(request: tool-request) -> tool-result;
+    add-comment-to-pending-review: func(request: tool-request) -> tool-result;
+    submit-pending-pull-request-review: func(request: tool-request) -> tool-result;
+    delete-pending-pull-request-review: func(request: tool-request) -> tool-result;
+}
+
+// Actions and workflows
+interface actions {
+    use types.{tool-result, tool-request};
+    
+    list-workflows: func(request: tool-request) -> tool-result;
+    list-workflow-runs: func(request: tool-request) -> tool-result;
+    get-workflow-run: func(request: tool-request) -> tool-result;
+    get-workflow-run-logs: func(request: tool-request) -> tool-result;
+    list-workflow-jobs: func(request: tool-request) -> tool-result;
+    get-job-logs: func(request: tool-request) -> tool-result;
+    list-workflow-run-artifacts: func(request: tool-request) -> tool-result;
+    download-workflow-run-artifact: func(request: tool-request) -> tool-result;
+    get-workflow-run-usage: func(request: tool-request) -> tool-result;
+    run-workflow: func(request: tool-request) -> tool-result;
+    rerun-workflow-run: func(request: tool-request) -> tool-result;
+    rerun-failed-jobs: func(request: tool-request) -> tool-result;
+    cancel-workflow-run: func(request: tool-request) -> tool-result;
+    delete-workflow-run-logs: func(request: tool-request) -> tool-result;
+}
+
+// Security features
+interface security {
+    use types.{tool-result, tool-request};
+    
+    // Code scanning
+    get-code-scanning-alert: func(request: tool-request) -> tool-result;
+    list-code-scanning-alerts: func(request: tool-request) -> tool-result;
+    
+    // Secret scanning
+    get-secret-scanning-alert: func(request: tool-request) -> tool-result;
+    list-secret-scanning-alerts: func(request: tool-request) -> tool-result;
+    
+    // Dependabot
+    get-dependabot-alert: func(request: tool-request) -> tool-result;
+    list-dependabot-alerts: func(request: tool-request) -> tool-result;
+    
+    // Security advisories
+    list-global-security-advisories: func(request: tool-request) -> tool-result;
+    get-global-security-advisory: func(request: tool-request) -> tool-result;
+    list-repository-security-advisories: func(request: tool-request) -> tool-result;
+    list-org-repository-security-advisories: func(request: tool-request) -> tool-result;
+}
+
+// User and organization management
+interface users {
+    use types.{tool-result, tool-request};
+    
+    search-users: func(request: tool-request) -> tool-result;
+    search-orgs: func(request: tool-request) -> tool-result;
+    get-me: func(request: tool-request) -> tool-result;
+    get-teams: func(request: tool-request) -> tool-result;
+    get-team-members: func(request: tool-request) -> tool-result;
+}
+
+// Notifications and activity
+interface notifications {
+    use types.{tool-result, tool-request};
+    
+    list-notifications: func(request: tool-request) -> tool-result;
+    get-notification-details: func(request: tool-request) -> tool-result;
+    dismiss-notification: func(request: tool-request) -> tool-result;
+    mark-all-notifications-read: func(request: tool-request) -> tool-result;
+    manage-notification-subscription: func(request: tool-request) -> tool-result;
+    manage-repository-notification-subscription: func(request: tool-request) -> tool-result;
+}
+
+// Discussions
+interface discussions {
+    use types.{tool-result, tool-request};
+    
+    list-discussions: func(request: tool-request) -> tool-result;
+    get-discussion: func(request: tool-request) -> tool-result;
+    get-discussion-comments: func(request: tool-request) -> tool-result;
+    list-discussion-categories: func(request: tool-request) -> tool-result;
+}
+
+// Gists
+interface gists {
+    use types.{tool-result, tool-request};
+    
+    list-gists: func(request: tool-request) -> tool-result;
+    create-gist: func(request: tool-request) -> tool-result;
+    update-gist: func(request: tool-request) -> tool-result;
+}
+
+// Projects
+interface projects {
+    use types.{tool-result, tool-request};
+    
+    list-projects: func(request: tool-request) -> tool-result;
+    get-project: func(request: tool-request) -> tool-result;
+    list-project-fields: func(request: tool-request) -> tool-result;
+    get-project-field: func(request: tool-request) -> tool-result;
+    list-project-items: func(request: tool-request) -> tool-result;
+    get-project-item: func(request: tool-request) -> tool-result;
+    add-project-item: func(request: tool-request) -> tool-result;
+    delete-project-item: func(request: tool-request) -> tool-result;
+}
+
+// Resources interface (for MCP resources)
+interface resources {
+    use types.{tool-result, resource-request};
+    
+    get-repository-resource: func(request: resource-request) -> tool-result;
+    get-repository-branch-resource: func(request: resource-request) -> tool-result;
+    get-repository-commit-resource: func(request: resource-request) -> tool-result;
+    get-repository-tag-resource: func(request: resource-request) -> tool-result;
+    get-repository-pr-resource: func(request: resource-request) -> tool-result;
+}
+
+// Prompts interface (for workflow generation)
+interface prompts {
+    use types.{tool-result, prompt-request};
+    
+    assign-coding-agent-prompt: func(request: prompt-request) -> tool-result;
+    issue-to-fix-workflow-prompt: func(request: prompt-request) -> tool-result;
+}
+
+// Dynamic toolsets
+interface dynamic {
+    use types.{tool-result, tool-request};
+    
+    list-available-toolsets: func(request: tool-request) -> tool-result;
+    get-toolsets-tools: func(request: tool-request) -> tool-result;
+    enable-toolset: func(request: tool-request) -> tool-result;
+}
+
+// Main world that the component implements
+world github-server {
+    // Export all the interfaces
+    export repositories;
+    export issues;
+    export actions;
+    export security;
+    export users;
+    export notifications;
+    export discussions;
+    export gists;
+    export projects;
+    export resources;
+    export prompts;
+    export dynamic;
+}
