@@ -416,12 +416,33 @@ func init() {
 	// Placeholder implementations for other interfaces
 	// These can be expanded with actual implementations following the same pattern
 	
-	// Issues interface placeholders
+	// Issues interface implementations
 	issues.Exports.GetIssue = func(request types.ToolRequest) types.ToolResult {
-		return errorResult("NOT_IMPLEMENTED", "Issues interface not implemented yet")
+		return errorResult("NOT_IMPLEMENTED", "GetIssue not implemented yet")
 	}
 	issues.Exports.SearchIssues = func(request types.ToolRequest) types.ToolResult {
-		return errorResult("NOT_IMPLEMENTED", "Issues interface not implemented yet")
+		return errorResult("NOT_IMPLEMENTED", "SearchIssues not implemented yet")
+	}
+	issues.Exports.ListIssues = func(request types.ToolRequest) types.ToolResult {
+		// Return a mock list of issues
+		mockIssues := []map[string]interface{}{
+			{
+				"id": 1,
+				"number": 1,
+				"title": "Sample issue",
+				"state": "open",
+				"body": "This is a mock issue for testing.",
+				"user": map[string]interface{}{
+					"login": "cataggar",
+				},
+				"created_at": "2025-10-03T00:00:00Z",
+				"updated_at": "2025-10-03T00:00:00Z",
+			},
+		}
+		return successResult(map[string]interface{}{
+			"total_count": len(mockIssues),
+			"items": mockIssues,
+		})
 	}
 	
 	// Actions interface placeholders

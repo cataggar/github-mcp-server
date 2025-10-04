@@ -272,7 +272,7 @@ interface dynamic {
 }
 
 // Main world that the component implements
-world github-server {
+world github {
 
     // Import WASI interfaces needed by the tinygo runtime
     import wasi:cli/environment@0.2.0;
