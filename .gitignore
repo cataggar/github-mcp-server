@@ -21,3 +21,4 @@ github-mcp-server
 
 # WebAssembly files
 *.wasm
+wit/deps/
